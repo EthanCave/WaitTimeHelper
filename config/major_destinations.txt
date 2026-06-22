@@ -1,0 +1,28 @@
+# Optional allow-list for scheduled collection.
+# Add one destination ID or slug per line to limit collection to specific major resorts.
+# Leave this file with comments only to collect every ThemeParks.wiki destination.
+
+# Florida and California Disney parks
+waltdisneyworldresort
+disneylandresort
+
+# Florida Universal parks
+universalresort_orlando
+
+# Busch Gardens Tampa
+buschgardenstampa
+
+# Cedar Point
+sixflags_destination_CP
+
+# Six Flags
+sixflags_destination_SFOG
+sixflags_destination_SFFT
+sixflags_destination_SFOT
+
+# Other requested parks
+thorpeparkresort
+hersheypark
+silverdollarcity
+europapark
+dollywood

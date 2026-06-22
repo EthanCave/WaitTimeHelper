@@ -1,0 +1,60 @@
+name: Collect wait times
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+    inputs:
+      destination_ids:
+        description: "Optional comma-separated ThemeParks.wiki destination IDs or slugs"
+        required: false
+        type: string
+      dry_run:
+        description: "Fetch data without committing it"
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: collect-wait-times
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Collect ThemeParks.wiki wait times
+        env:
+          THEMEPARKS_DESTINATION_IDS: ${{ inputs.destination_ids }}
+        run: |
+          args=()
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            args+=(--dry-run)
+          fi
+          python scripts/collect_wait_times.py "${args[@]}"
+
+      - name: Commit collected data
+        if: ${{ !inputs.dry_run }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data
+          if git diff --cached --quiet; then
+            echo "No wait-time changes to commit."
+          else
+            git commit -m "Collect wait times"
+            git push
+          fi
