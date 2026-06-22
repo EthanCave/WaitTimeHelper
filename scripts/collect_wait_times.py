@@ -361,8 +361,23 @@ def main() -> int:
     args = parse_args()
     captured_at = utc_now_iso()
     date_part = captured_at[:10]
-    wait_fields = WAIT_TIME_FIELDS + [RAW_QUEUE_FIELD] if args.include_raw_queue else WAIT_TIME_FIELDS
 
+    wait_path = args.output_dir / "wait_times" / f"{date_part}.csv"
+    desired_wait_fields = (
+        WAIT_TIME_FIELDS + [RAW_QUEUE_FIELD] if args.include_raw_queue else WAIT_TIME_FIELDS
+    )
+    if wait_path.exists():
+        with wait_path.open(newline="", encoding="utf-8") as handle:
+            try:
+                existing_fields = next(csv.reader(handle))
+            except StopIteration:
+                existing_fields = []
+        if existing_fields and existing_fields != desired_wait_fields:
+            raise ValueError(
+                f"{wait_path} already exists with fields {existing_fields}; rerun with matching --include-raw-queue setting"
+            )
+
+    wait_fields = desired_wait_fields
     destinations_response = request_json("/destinations")
     all_destinations = destinations_response.get("destinations", [])
     selected = destination_filter(args)
