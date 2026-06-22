@@ -53,8 +53,11 @@ WAIT_TIME_FIELDS = [
     "boarding_group_current_end",
     "boarding_group_next_allocation_time",
     "boarding_group_estimated_wait_minutes",
-    "raw_queue_json",
 ]
+
+# Verbatim API queue payload. It duplicates the parsed columns above, so it is
+# only written when --include-raw-queue is passed (e.g. for debugging).
+RAW_QUEUE_FIELD = "raw_queue_json"
 
 CATALOG_FIELDS = [
     "cataloged_at",
@@ -125,6 +128,19 @@ def append_csv(path: Path, fieldnames: list[str], rows: list[dict[str, Any]]) ->
         if not exists:
             writer.writeheader()
         writer.writerows(rows)
+
+
+def existing_catalog_ids(path: Path) -> set[str]:
+    """Entity IDs already recorded in today's catalog file, if any."""
+    if not path.exists():
+        return set()
+    ids: set[str] = set()
+    with path.open(newline="", encoding="utf-8") as handle:
+        for row in csv.DictReader(handle):
+            entity_id = row.get("entity_id")
+            if entity_id:
+                ids.add(entity_id)
+    return ids
 
 
 def write_jsonl(path: Path, item: dict[str, Any]) -> None:
@@ -265,6 +281,7 @@ def live_rows(
     destination: dict[str, Any],
     meta: dict[str, EntityMeta],
     captured_at: str,
+    include_raw_queue: bool = False,
 ) -> list[dict[str, Any]]:
     destination_id = str(destination["id"])
     live_response = request_json(f"/entity/{urllib.parse.quote(destination_id)}/live")
@@ -281,38 +298,38 @@ def live_rows(
         price = nested(queue, "PAID_RETURN_TIME", "price") or {}
         boarding_group = queue.get("BOARDING_GROUP") or {}
 
-        wait_rows.append(
-            {
-                "captured_at": captured_at,
-                "destination_id": destination_id,
-                "destination_name": destination.get("name", ""),
-                "destination_timezone": destination_timezone,
-                "park_id": park_id,
-                "park_name": park_name,
-                "entity_id": entity.get("id", ""),
-                "entity_name": entity.get("name", ""),
-                "entity_type": entity_type,
-                "status": entity.get("status", ""),
-                "source_last_updated": entity.get("lastUpdated", ""),
-                "standby_wait_minutes": csv_value(nested(queue, "STANDBY", "waitTime")),
-                "single_rider_wait_minutes": csv_value(nested(queue, "SINGLE_RIDER", "waitTime")),
-                "paid_standby_wait_minutes": csv_value(nested(queue, "PAID_STANDBY", "waitTime")),
-                "return_time_state": csv_value(nested(queue, "RETURN_TIME", "state")),
-                "return_time_start": csv_value(nested(queue, "RETURN_TIME", "returnStart")),
-                "return_time_end": csv_value(nested(queue, "RETURN_TIME", "returnEnd")),
-                "paid_return_time_state": csv_value(nested(queue, "PAID_RETURN_TIME", "state")),
-                "paid_return_time_start": csv_value(nested(queue, "PAID_RETURN_TIME", "returnStart")),
-                "paid_return_time_end": csv_value(nested(queue, "PAID_RETURN_TIME", "returnEnd")),
-                "paid_return_price_amount": csv_value(price.get("amount")),
-                "paid_return_price_currency": csv_value(price.get("currency")),
-                "boarding_group_state": csv_value(boarding_group.get("allocationStatus")),
-                "boarding_group_current_start": csv_value(boarding_group.get("currentGroupStart")),
-                "boarding_group_current_end": csv_value(boarding_group.get("currentGroupEnd")),
-                "boarding_group_next_allocation_time": csv_value(boarding_group.get("nextAllocationTime")),
-                "boarding_group_estimated_wait_minutes": csv_value(boarding_group.get("estimatedWait")),
-                "raw_queue_json": json.dumps(queue, sort_keys=True, separators=(",", ":")),
-            }
-        )
+        row: dict[str, Any] = {
+            "captured_at": captured_at,
+            "destination_id": destination_id,
+            "destination_name": destination.get("name", ""),
+            "destination_timezone": destination_timezone,
+            "park_id": park_id,
+            "park_name": park_name,
+            "entity_id": entity.get("id", ""),
+            "entity_name": entity.get("name", ""),
+            "entity_type": entity_type,
+            "status": entity.get("status", ""),
+            "source_last_updated": entity.get("lastUpdated", ""),
+            "standby_wait_minutes": csv_value(nested(queue, "STANDBY", "waitTime")),
+            "single_rider_wait_minutes": csv_value(nested(queue, "SINGLE_RIDER", "waitTime")),
+            "paid_standby_wait_minutes": csv_value(nested(queue, "PAID_STANDBY", "waitTime")),
+            "return_time_state": csv_value(nested(queue, "RETURN_TIME", "state")),
+            "return_time_start": csv_value(nested(queue, "RETURN_TIME", "returnStart")),
+            "return_time_end": csv_value(nested(queue, "RETURN_TIME", "returnEnd")),
+            "paid_return_time_state": csv_value(nested(queue, "PAID_RETURN_TIME", "state")),
+            "paid_return_time_start": csv_value(nested(queue, "PAID_RETURN_TIME", "returnStart")),
+            "paid_return_time_end": csv_value(nested(queue, "PAID_RETURN_TIME", "returnEnd")),
+            "paid_return_price_amount": csv_value(price.get("amount")),
+            "paid_return_price_currency": csv_value(price.get("currency")),
+            "boarding_group_state": csv_value(boarding_group.get("allocationStatus")),
+            "boarding_group_current_start": csv_value(boarding_group.get("currentGroupStart")),
+            "boarding_group_current_end": csv_value(boarding_group.get("currentGroupEnd")),
+            "boarding_group_next_allocation_time": csv_value(boarding_group.get("nextAllocationTime")),
+            "boarding_group_estimated_wait_minutes": csv_value(boarding_group.get("estimatedWait")),
+        }
+        if include_raw_queue:
+            row[RAW_QUEUE_FIELD] = json.dumps(queue, sort_keys=True, separators=(",", ":"))
+        wait_rows.append(row)
 
     return wait_rows
 
@@ -332,6 +349,11 @@ def parse_args() -> argparse.Namespace:
         help="Optional newline-delimited destination IDs/slugs to collect.",
     )
     parser.add_argument("--dry-run", action="store_true", help="Fetch data but do not write files.")
+    parser.add_argument(
+        "--include-raw-queue",
+        action="store_true",
+        help="Also write the verbatim raw_queue_json column (duplicates parsed fields; off by default).",
+    )
     return parser.parse_args()
 
 
@@ -340,6 +362,22 @@ def main() -> int:
     captured_at = utc_now_iso()
     date_part = captured_at[:10]
 
+    wait_path = args.output_dir / "wait_times" / f"{date_part}.csv"
+    desired_wait_fields = (
+        WAIT_TIME_FIELDS + [RAW_QUEUE_FIELD] if args.include_raw_queue else WAIT_TIME_FIELDS
+    )
+    if wait_path.exists():
+        with wait_path.open(newline="", encoding="utf-8") as handle:
+            try:
+                existing_fields = next(csv.reader(handle))
+            except StopIteration:
+                existing_fields = []
+        if existing_fields and existing_fields != desired_wait_fields:
+            raise ValueError(
+                f"{wait_path} already exists with fields {existing_fields}; rerun with matching --include-raw-queue setting"
+            )
+
+    wait_fields = desired_wait_fields
     destinations_response = request_json("/destinations")
     all_destinations = destinations_response.get("destinations", [])
     selected = destination_filter(args)
@@ -355,7 +393,7 @@ def main() -> int:
         try:
             meta, destination_catalog_rows = build_catalog(destination, captured_at)
             catalog_rows.extend(destination_catalog_rows)
-            wait_rows.extend(live_rows(destination, meta, captured_at))
+            wait_rows.extend(live_rows(destination, meta, captured_at, args.include_raw_queue))
         except Exception as exc:
             failures.append(
                 {
@@ -380,15 +418,25 @@ def main() -> int:
         )
         return 1 if failures else 0
 
-    append_csv(args.output_dir / "wait_times" / f"{date_part}.csv", WAIT_TIME_FIELDS, wait_rows)
-    append_csv(args.output_dir / "catalog" / f"{date_part}.csv", CATALOG_FIELDS, catalog_rows)
+    catalog_path = args.output_dir / "catalog" / f"{date_part}.csv"
+    known_ids = existing_catalog_ids(catalog_path)
+    new_catalog_rows: list[dict[str, str]] = []
+    for row in catalog_rows:
+        entity_id = row["entity_id"]
+        if entity_id in known_ids:
+            continue
+        known_ids.add(entity_id)
+        new_catalog_rows.append(row)
+
+    append_csv(args.output_dir / "wait_times" / f"{date_part}.csv", wait_fields, wait_rows)
+    append_csv(catalog_path, CATALOG_FIELDS, new_catalog_rows)
     write_jsonl(
         args.output_dir / "run_log.jsonl",
         {
             "captured_at": captured_at,
             "destinations_requested": len(destinations),
             "wait_rows": len(wait_rows),
-            "catalog_rows": len(catalog_rows),
+            "catalog_rows_new": len(new_catalog_rows),
             "failures": failures,
         },
     )
@@ -397,7 +445,7 @@ def main() -> int:
         print(json.dumps({"failures": failures}, indent=2), file=sys.stderr)
         return 1
 
-    print(f"wrote {len(wait_rows)} wait rows and {len(catalog_rows)} catalog rows")
+    print(f"wrote {len(wait_rows)} wait rows and {len(new_catalog_rows)} new catalog rows")
     return 0
 
 

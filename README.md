@@ -16,8 +16,8 @@ By default, it collects every destination exposed by ThemeParks.wiki. To limit c
 
 ## Data Layout
 
-- `data/wait_times/YYYY-MM-DD.csv`: append-only attraction wait snapshot rows.
-- `data/catalog/YYYY-MM-DD.csv`: attraction catalog rows captured during each run.
+- `data/wait_times/YYYY-MM-DD.csv`: attraction wait snapshots appended through the day (one file per UTC day).
+- `data/catalog/YYYY-MM-DD.csv`: attraction catalog rows, written once per attraction per day (re-collection of an already-seen attraction is skipped).
 - `data/show_times/YYYY-MM-DD.csv`: optional on-demand showtime rows from `scripts/collect_show_times.py`.
 - `data/run_log.jsonl`: one run summary per collection attempt.
 
@@ -29,6 +29,8 @@ Useful wait-time columns include:
 - `status`: `OPERATING`, `DOWN`, `CLOSED`, or `REFURBISHMENT`.
 - `standby_wait_minutes`, `single_rider_wait_minutes`, `paid_standby_wait_minutes`.
 - return-time and boarding-group fields where the source provides them.
+
+The verbatim `raw_queue_json` column is omitted by default (it duplicates the parsed columns above). Pass `--include-raw-queue` to `collect_wait_times.py` if you want it for debugging.
 
 Optional showtime columns include:
 
