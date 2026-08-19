@@ -1185,3 +1185,4 @@
 {"captured_at":"2026-08-18T23:14:36Z","catalog_rows_new":0,"destinations_requested":15,"failures":[],"wait_rows":851}
 {"captured_at":"2026-08-18T23:35:21Z","catalog_rows_new":0,"destinations_requested":15,"failures":[],"wait_rows":851}
 {"captured_at":"2026-08-18T23:55:04Z","catalog_rows_new":0,"destinations_requested":15,"failures":[],"wait_rows":851}
+{"captured_at":"2026-08-19T00:26:07Z","catalog_rows_new":974,"destinations_requested":15,"failures":[],"wait_rows":851}
