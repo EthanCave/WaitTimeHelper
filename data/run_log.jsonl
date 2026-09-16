@@ -1664,3 +1664,4 @@
 {"captured_at":"2026-09-16T14:24:51Z","catalog_rows_new":49,"destinations_requested":15,"failures":[],"wait_rows":907}
 {"captured_at":"2026-09-16T18:15:33Z","catalog_rows_new":0,"destinations_requested":15,"failures":[],"wait_rows":908}
 {"captured_at":"2026-09-16T21:27:47Z","catalog_rows_new":0,"destinations_requested":15,"failures":[],"wait_rows":908}
+{"captured_at":"2026-09-16T23:42:30Z","catalog_rows_new":0,"destinations_requested":15,"failures":[],"wait_rows":908}
