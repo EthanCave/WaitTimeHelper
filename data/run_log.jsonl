@@ -1908,3 +1908,4 @@
 {"captured_at":"2026-10-28T19:17:57Z","catalog_rows_new":0,"destinations_requested":15,"failures":[],"wait_rows":945}
 {"captured_at":"2026-10-28T23:21:19Z","catalog_rows_new":0,"destinations_requested":15,"failures":[],"wait_rows":945}
 {"captured_at":"2026-10-29T02:33:50Z","catalog_rows_new":1077,"destinations_requested":15,"failures":[],"wait_rows":927}
+{"captured_at":"2026-10-29T08:53:50Z","catalog_rows_new":0,"destinations_requested":15,"failures":[],"wait_rows":927}
