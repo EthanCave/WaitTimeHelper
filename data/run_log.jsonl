@@ -1919,3 +1919,4 @@
 {"captured_at":"2026-10-31T01:47:21Z","catalog_rows_new":1077,"destinations_requested":15,"failures":[],"wait_rows":903}
 {"captured_at":"2026-10-31T07:36:01Z","catalog_rows_new":0,"destinations_requested":15,"failures":[],"wait_rows":903}
 {"captured_at":"2026-10-31T13:52:03Z","catalog_rows_new":0,"destinations_requested":15,"failures":[],"wait_rows":899}
+{"captured_at":"2026-10-31T17:59:53Z","catalog_rows_new":0,"destinations_requested":15,"failures":[],"wait_rows":899}
