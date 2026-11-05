@@ -1941,3 +1941,4 @@
 {"captured_at":"2026-11-05T03:42:52Z","catalog_rows_new":1072,"destinations_requested":15,"failures":[],"wait_rows":878}
 {"captured_at":"2026-11-05T11:29:53Z","catalog_rows_new":0,"destinations_requested":15,"failures":[],"wait_rows":868}
 {"captured_at":"2026-11-05T18:53:47Z","catalog_rows_new":0,"destinations_requested":15,"failures":[],"wait_rows":868}
+{"captured_at":"2026-11-05T23:52:18Z","catalog_rows_new":0,"destinations_requested":15,"failures":[],"wait_rows":868}
