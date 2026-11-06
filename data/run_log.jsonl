@@ -1944,3 +1944,4 @@
 {"captured_at":"2026-11-05T23:52:18Z","catalog_rows_new":0,"destinations_requested":15,"failures":[],"wait_rows":868}
 {"captured_at":"2026-11-06T03:47:46Z","catalog_rows_new":1072,"destinations_requested":15,"failures":[],"wait_rows":871}
 {"captured_at":"2026-11-06T11:38:41Z","catalog_rows_new":0,"destinations_requested":15,"failures":[],"wait_rows":871}
+{"captured_at":"2026-11-06T18:25:23Z","catalog_rows_new":0,"destinations_requested":15,"failures":[],"wait_rows":870}
