@@ -1958,3 +1958,4 @@
 {"captured_at":"2026-11-08T23:16:03Z","catalog_rows_new":0,"destinations_requested":15,"failures":[],"wait_rows":872}
 {"captured_at":"2026-11-09T02:46:44Z","catalog_rows_new":1072,"destinations_requested":15,"failures":[],"wait_rows":869}
 {"captured_at":"2026-11-09T10:28:16Z","catalog_rows_new":0,"destinations_requested":15,"failures":[],"wait_rows":869}
+{"captured_at":"2026-11-09T20:54:56Z","catalog_rows_new":3,"destinations_requested":15,"failures":[],"wait_rows":871}
