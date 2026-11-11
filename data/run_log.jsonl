@@ -1963,3 +1963,4 @@
 {"captured_at":"2026-11-10T10:49:06Z","catalog_rows_new":0,"destinations_requested":15,"failures":[],"wait_rows":872}
 {"captured_at":"2026-11-10T18:20:18Z","catalog_rows_new":0,"destinations_requested":15,"failures":[],"wait_rows":872}
 {"captured_at":"2026-11-10T23:35:02Z","catalog_rows_new":0,"destinations_requested":15,"failures":[],"wait_rows":872}
+{"captured_at":"2026-11-11T02:59:29Z","catalog_rows_new":1075,"destinations_requested":15,"failures":[],"wait_rows":872}
