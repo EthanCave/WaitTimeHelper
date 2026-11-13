@@ -1970,3 +1970,4 @@
 {"captured_at":"2026-11-12T04:28:29Z","catalog_rows_new":1073,"destinations_requested":15,"failures":[],"wait_rows":870}
 {"captured_at":"2026-11-12T13:02:04Z","catalog_rows_new":0,"destinations_requested":15,"failures":[],"wait_rows":870}
 {"captured_at":"2026-11-12T20:46:28Z","catalog_rows_new":0,"destinations_requested":15,"failures":[],"wait_rows":870}
+{"captured_at":"2026-11-13T01:32:07Z","catalog_rows_new":1073,"destinations_requested":15,"failures":[],"wait_rows":870}
