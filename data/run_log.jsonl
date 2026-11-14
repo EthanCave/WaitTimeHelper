@@ -1977,3 +1977,4 @@
 {"captured_at":"2026-11-14T02:22:29Z","catalog_rows_new":1073,"destinations_requested":15,"failures":[],"wait_rows":859}
 {"captured_at":"2026-11-14T09:07:56Z","catalog_rows_new":0,"destinations_requested":15,"failures":[],"wait_rows":859}
 {"captured_at":"2026-11-14T15:45:33Z","catalog_rows_new":0,"destinations_requested":15,"failures":[],"wait_rows":855}
+{"captured_at":"2026-11-14T20:05:19Z","catalog_rows_new":0,"destinations_requested":15,"failures":[],"wait_rows":859}
