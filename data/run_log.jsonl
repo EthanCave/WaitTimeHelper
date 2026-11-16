@@ -1983,3 +1983,4 @@
 {"captured_at":"2026-11-15T11:16:26Z","catalog_rows_new":0,"destinations_requested":15,"failures":[],"wait_rows":842}
 {"captured_at":"2026-11-15T17:52:54Z","catalog_rows_new":0,"destinations_requested":15,"failures":[],"wait_rows":843}
 {"captured_at":"2026-11-15T22:08:38Z","catalog_rows_new":0,"destinations_requested":15,"failures":[],"wait_rows":848}
+{"captured_at":"2026-11-16T01:57:39Z","catalog_rows_new":1073,"destinations_requested":15,"failures":[],"wait_rows":848}
