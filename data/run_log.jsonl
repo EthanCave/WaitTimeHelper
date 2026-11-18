@@ -1990,3 +1990,4 @@
 {"captured_at":"2026-11-17T10:43:24Z","catalog_rows_new":0,"destinations_requested":15,"failures":[],"wait_rows":846}
 {"captured_at":"2026-11-17T19:24:26Z","catalog_rows_new":0,"destinations_requested":15,"failures":[],"wait_rows":848}
 {"captured_at":"2026-11-18T01:43:07Z","catalog_rows_new":1071,"destinations_requested":15,"failures":[],"wait_rows":848}
+{"captured_at":"2026-11-18T09:07:36Z","catalog_rows_new":0,"destinations_requested":15,"failures":[],"wait_rows":848}
