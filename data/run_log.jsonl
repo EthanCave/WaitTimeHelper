@@ -2021,3 +2021,4 @@
 {"captured_at":"2026-11-27T02:29:14Z","catalog_rows_new":1072,"destinations_requested":15,"failures":[],"wait_rows":863}
 {"captured_at":"2026-11-27T11:10:08Z","catalog_rows_new":0,"destinations_requested":15,"failures":[],"wait_rows":863}
 {"captured_at":"2026-11-27T19:54:55Z","catalog_rows_new":0,"destinations_requested":15,"failures":[],"wait_rows":863}
+{"captured_at":"2026-11-28T02:17:24Z","catalog_rows_new":1072,"destinations_requested":15,"failures":[],"wait_rows":865}
